@@ -1,9 +1,12 @@
 import Snippets from './Snippets'
 
 const TagManager = {
-  dataScript: function (dataLayer) {
+  dataScript: function (dataLayer, nonce) {
     const script = document.createElement('script')
     script.innerHTML = dataLayer
+    if (nonce) {
+      script.setAttribute('nonce', nonce);
+    }
     return script
   },
   gtm: function (args) {
@@ -24,7 +27,7 @@ const TagManager = {
       return script
     }
 
-    const dataScript = this.dataScript(snippets.dataLayerVar)
+    const dataScript = this.dataScript(snippets.dataLayerVar, args.nonce)
 
     return {
       noScript,
@@ -46,10 +49,10 @@ const TagManager = {
     document.head.insertBefore(gtm.script(), document.head.childNodes[0])
     document.body.insertBefore(gtm.noScript(), document.body.childNodes[0])
   },
-  dataLayer: function ({dataLayer, dataLayerName = 'dataLayer'}) {
+  dataLayer: function ({ dataLayer, dataLayerName = 'dataLayer', nonce }) {
     if (window[dataLayerName]) return window[dataLayerName].push(dataLayer)
     const snippets = Snippets.dataLayer(dataLayer, dataLayerName)
-    const dataScript = this.dataScript(snippets)
+    const dataScript = this.dataScript(snippets, nonce)
     document.head.insertBefore(dataScript, document.head.childNodes[0])
   }
 }
