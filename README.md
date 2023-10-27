@@ -4,9 +4,9 @@
 
 # react-gtm-nonce
 
-> Note
->
-> This package is a fork from https://github.com/alinemorelli/react-gtm. It adds the ability to provide a `nonce` that will be added to the generated `script` attributes, to play well with Content-Security-Policies.
+> This package is a fork from https://github.com/alinemorelli/react-gtm. It adds the ability to provide a `nonce`, that will be added to the generated `script` attributes. This is needed if you
+> are using _Content Security Policy (CSP)_.
+
 
 ### React Google Tag Manager Module (with nonce support)
 
@@ -200,6 +200,26 @@ Look for gtm_auth and gtm_preview
    - https://support.google.com/tagmanager/answer/6311518
    - https://www.simoahava.com/analytics/better-qa-with-google-tag-manager-environments/
 
+
+## Nonce
+
+If you are using _Content Securiy Policy (CSP)_, you can use the `nonce` option that will add a nonce attribute on the generated script tags.
+
+### Example:
+
+```js
+TagManager.initialize({
+    gtmId: 'GTM-000000',
+    nonce: 'some-random-nonce'
+})
+
+...
+
+TagManager.dataLayer({
+    dataLayer: { userId: '001' },
+    nonce: 'some-random-nonce'
+})
+```
 
 |Value|Type|Required|Notes|
 |------|-----|-----|-----|
